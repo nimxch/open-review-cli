@@ -1,3 +1,2 @@
 run:
-	go build
-	./open-review-cli
+	bun index.ts
