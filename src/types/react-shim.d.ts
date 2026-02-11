@@ -7,5 +7,6 @@ declare module "react" {
   export function useState<S>(
     initialState: S | (() => S),
   ): [S, Dispatch<SetStateAction<S>>]
+  export function useEffect(effect: EffectCallback, deps?: DependencyList): void
   export function createElement(type: unknown, ...children: unknown[]): ReactNode
 }
