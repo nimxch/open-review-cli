@@ -25,7 +25,7 @@ const App = () => {
         return
     }
 
-    setStatus(`Unknown command: ${command || "(empty)"}`)
+    addMessage("assistant", `Unknown command: ${command}. Try /help`)
   }
 
   return (
