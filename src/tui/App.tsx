@@ -35,10 +35,69 @@ const App = () => {
       justifyContent="center"
       alignItems="center"
       flexDirection="column"
-      gap={1}
+      backgroundColor="#0b1020"
     >
-      <text>{status}</text>
-      <input focused width={32} placeholder="Type /test" onSubmit={handleSubmit} />
+      <box
+        width="100%"
+        borderStyle="single"
+        borderColor="#25324f"
+        backgroundColor="#11172a"
+        paddingX={1}
+        paddingY={0}
+        justifyContent="space-between"
+      >
+        <text fg="#76e3ff">opencode mock</text>
+        <text fg="#7dd3fc">model: {modelName}</text>
+      </box>
+
+      <box width="100%" flexGrow={1} paddingX={1} paddingY={1}>
+        <box
+          width="100%"
+          height="100%"
+          borderStyle="single"
+          borderColor="#25324f"
+          backgroundColor="#090f1d"
+          paddingX={1}
+          paddingY={1}
+        >
+          <text fg="#dbe6ff" wrapMode="word">
+            {formatTranscript()}
+          </text>
+        </box>
+      </box>
+
+      <box
+        width="100%"
+        borderStyle="single"
+        borderColor="#25324f"
+        paddingX={1}
+        paddingY={0}
+        backgroundColor="#11172a"
+      >
+        <input
+          focused
+          width="100%"
+          value={inputValue}
+          placeholder="Type a slash command (/help)"
+          onInput={setInputValue}
+          onSubmit={handleSubmit}
+        />
+      </box>
+
+      <box
+        width="100%"
+        paddingX={1}
+        paddingY={0}
+        justifyContent="space-between"
+        backgroundColor="#090f1d"
+      >
+        <text fg={isCalling ? "#facc15" : "#4ade80"}>
+          {isCalling
+            ? `${spinnerFrames[spinnerIndex]} processing /call`
+            : `${spinnerFrames[spinnerIndex]} ${statusLine}`}
+        </text>
+        <text fg="#93a5c4">/help /call /test /clear</text>
+      </box>
     </box>
   )
 }
