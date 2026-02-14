@@ -32,8 +32,6 @@ const App = () => {
     <box
       width="100%"
       height="100%"
-      justifyContent="center"
-      alignItems="center"
       flexDirection="column"
       backgroundColor="#0b1020"
     >
