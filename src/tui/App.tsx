@@ -20,9 +20,10 @@ const App = () => {
       setStatus("Test command worked")
       return
     }
-    if( command == "/help"){
-        setStatus("Triggered Help Command")
-        return
+
+    if (command === "/clear") {
+      setMessages([{ role: "assistant", text: "Transcript cleared." }])
+      return
     }
 
     addMessage("assistant", `Unknown command: ${command}. Try /help`)
