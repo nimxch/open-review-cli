@@ -17,7 +17,17 @@ const App = () => {
     const command = rawValue.trim()
 
     if (command === "/test") {
-      setStatus("Test command worked")
+      addMessage("assistant", "System check passed.")
+      return
+    }
+
+    if (command === "/help") {
+      showHelp()
+      return
+    }
+
+    if (command === "/call") {
+      void runMockCall()
       return
     }
 
