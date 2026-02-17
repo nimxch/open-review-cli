@@ -14,7 +14,14 @@ const App = () => {
           ? ((payload as { value: string }).value ?? "")
           : ""
 
-    const command = rawValue.trim()
+    const command = rawValue.trim().toLowerCase()
+    setInputValue("")
+
+    if (!command) {
+      return
+    }
+
+    addMessage("user", command)
 
     if (command === "/test") {
       addMessage("assistant", "System check passed.")
