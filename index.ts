@@ -34,6 +34,7 @@ const menu = new TabSelectRenderable(renderer, {
     { name: "Open File", description: "Open an existing file" },
     { name: "Exit", description: "Exit Application" },
   ],
+  visible: false,
 });
 
 const log = new TextRenderable(renderer, {
@@ -51,12 +52,21 @@ const input = new InputRenderable(renderer, {
 
 menu.on(SelectRenderableEvents.ITEM_SELECTED, (index, option) => {
   log.content = option.name;
+  menu.visible = false;
+  input.focus();
   renderer.requestRender();
 });
 
 input.focus();
 
 input.on(InputRenderableEvents.ENTER, (value) => {
+  if (value.startsWith("/")) {
+    menu.visible = true;
+    renderer.requestRender();
+  } else if (menu.visible) {
+    menu.visible = false;
+    renderer.requestRender();
+  }
   log.content = value;
   renderer.requestRender();
 });
@@ -65,6 +75,7 @@ renderer.root.add(
     {
       borderStyle: "rounded",
       flexDirection: "column",
+      height: "100%",
     },
     Box(
       {
@@ -85,10 +96,11 @@ renderer.root.add(
         padding: 1,
         flexDirection: "column",
         gap: 1,
-        bottom: 0,
+        flexGrow: 1,
       },
       log,
       input,
+      menu,
     ),
   ),
 );
