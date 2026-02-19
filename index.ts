@@ -1,11 +1,20 @@
-import { Box, createCliRenderer, SelectRenderable, SelectRenderableEvents, Text, TextAttributes, TextRenderable } from "@opentui/core";
+import { ASCIIFontRenderable, Box, createCliRenderer, RGBA, SelectRenderable, SelectRenderableEvents, TabSelectRenderable, Text, TextAttributes, TextRenderable } from "@opentui/core";
 
 const renderer = await createCliRenderer({
   exitOnCtrlC: true,
   targetFps: 30,
 });
 
-const menu = new SelectRenderable(renderer, {
+
+
+const title = new ASCIIFontRenderable(renderer, {
+    id: "title",
+    text: "OpenReview",
+    font: "tiny",
+    color: RGBA.fromInts(255,255,255,255)
+})
+
+const menu = new TabSelectRenderable(renderer, {
   id: "menu",
   width: 30,
   height: 8,
@@ -44,12 +53,13 @@ renderer.root.add(
       {
         borderStyle: "rounded",
         padding: 1,
-        flexDirection: "column",
+        flexDirection: "row",
         gap: 1,
       },
+      title,
       Text({
-        content: "OpenReview v0.0.1",
-        fg: "#FF0000",
+        content: "v0.0.1",
+        fg: "#FFF"
       }),
     ),
     Box(
@@ -58,6 +68,7 @@ renderer.root.add(
         padding: 1,
         flexDirection: "row",
         gap: 1,
+        bottom: 0
       },
       log,
       menu,
