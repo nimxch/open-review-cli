@@ -1,4 +1,4 @@
-import { Box, createCliRenderer, SelectRenderable, Text } from "@opentui/core";
+import { Box, createCliRenderer, SelectRenderable, SelectRenderableEvents, Text, TextAttributes, TextRenderable } from "@opentui/core";
 
 const renderer = await createCliRenderer({
   exitOnCtrlC: true,
@@ -16,8 +16,24 @@ const menu = new SelectRenderable(renderer, {
   ],
 });
 
+const log = new TextRenderable(renderer, {
+    id: "log",
+    content: "",
+    fg: "#FFF",
+    attributes: TextAttributes.BOLD | TextAttributes.UNDERLINE,
+})
 
 menu.focus()
+
+
+menu.on(
+    SelectRenderableEvents.ITEM_SELECTED, (index, option) => {
+        log.content = option.name
+renderer.requestRender()
+    }
+)
+
+
 renderer.root.add(
   Box(
     {
@@ -28,10 +44,9 @@ renderer.root.add(
       {
         borderStyle: "rounded",
         padding: 1,
-        flexDirection: "row",
+        flexDirection: "column",
         gap: 1,
       },
-      menu,
       Text({
         content: "OpenReview v0.0.1",
         fg: "#FF0000",
@@ -44,14 +59,8 @@ renderer.root.add(
         flexDirection: "row",
         gap: 1,
       },
-      Text({
-        content: "Hello, OpenTUI!",
-        fg: "#FF0000",
-      }),
-      Text({
-        content: "Hello, World!",
-        fg: "#00FF00",
-      }),
+      log,
+      menu,
     ),
   ),
 );
