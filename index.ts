@@ -1,18 +1,29 @@
-import { ASCIIFontRenderable, Box, createCliRenderer, RGBA, SelectRenderable, SelectRenderableEvents, TabSelectRenderable, Text, TextAttributes, TextRenderable } from "@opentui/core";
+import {
+  ASCIIFontRenderable,
+  Box,
+  createCliRenderer,
+  InputRenderable,
+  InputRenderableEvents,
+  RGBA,
+  SelectRenderable,
+  SelectRenderableEvents,
+  TabSelectRenderable,
+  Text,
+  TextAttributes,
+  TextRenderable,
+} from "@opentui/core";
 
 const renderer = await createCliRenderer({
   exitOnCtrlC: true,
   targetFps: 30,
 });
 
-
-
 const title = new ASCIIFontRenderable(renderer, {
-    id: "title",
-    text: "OpenReview",
-    font: "tiny",
-    color: RGBA.fromInts(255,255,255,255)
-})
+  id: "title",
+  text: "OpenReview",
+  font: "tiny",
+  color: RGBA.fromInts(255, 255, 255, 255),
+});
 
 const menu = new TabSelectRenderable(renderer, {
   id: "menu",
@@ -26,23 +37,29 @@ const menu = new TabSelectRenderable(renderer, {
 });
 
 const log = new TextRenderable(renderer, {
-    id: "log",
-    content: "",
-    fg: "#FFF",
-    attributes: TextAttributes.BOLD | TextAttributes.UNDERLINE,
-})
+  id: "log",
+  content: "",
+  fg: "#FFF",
+  attributes: TextAttributes.BOLD | TextAttributes.UNDERLINE,
+});
 
-menu.focus()
+const input = new InputRenderable(renderer, {
+  id: "input",
+  width: "auto",
+  placeholder: "Type something...",
+});
 
+menu.on(SelectRenderableEvents.ITEM_SELECTED, (index, option) => {
+  log.content = option.name;
+  renderer.requestRender();
+});
 
-menu.on(
-    SelectRenderableEvents.ITEM_SELECTED, (index, option) => {
-        log.content = option.name
-renderer.requestRender()
-    }
-)
+input.focus();
 
-
+input.on(InputRenderableEvents.ENTER, (value) => {
+  log.content = value;
+  renderer.requestRender();
+});
 renderer.root.add(
   Box(
     {
@@ -59,19 +76,19 @@ renderer.root.add(
       title,
       Text({
         content: "v0.0.1",
-        fg: "#FFF"
+        fg: "#FFF",
       }),
     ),
     Box(
       {
         borderStyle: "rounded",
         padding: 1,
-        flexDirection: "row",
+        flexDirection: "column",
         gap: 1,
-        bottom: 0
+        bottom: 0,
       },
       log,
-      menu,
+      input,
     ),
   ),
 );
